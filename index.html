@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeonPlay Arcade</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">NP</span>
+      <div>
+        <h1>NeonPlay</h1>
+        <p>Arcade de minigames</p>
+      </div>
+    </div>
+
+    <section class="player-panel" aria-label="Progresso do jogador">
+      <div class="level-line">
+        <span id="levelLabel">Nivel 1</span>
+        <strong id="xpLabel">0 XP</strong>
+      </div>
+      <div class="xp-track">
+        <div id="xpFill" class="xp-fill"></div>
+      </div>
+    </section>
+
+    <button id="soundToggle" class="icon-button" type="button" aria-label="Alternar sons" title="Alternar sons">S</button>
+  </header>
+
+  <main class="app-shell">
+    <section class="dashboard" aria-label="Selecao de jogos">
+      <div class="section-heading">
+        <span>Escolha seu desafio</span>
+        <h2>6 arenas prontas para jogar</h2>
+      </div>
+      <div id="gameGrid" class="game-grid"></div>
+    </section>
+
+    <section class="arena" aria-live="polite">
+      <div class="arena-header">
+        <button id="backButton" class="ghost-button" type="button">&lt; Menu</button>
+        <div>
+          <span id="arenaTag">Dashboard</span>
+          <h2 id="gameTitle">Selecione um jogo</h2>
+        </div>
+      </div>
+      <div id="gameMount" class="game-mount">
+        <div class="empty-state">
+          <span>GO</span>
+          <p>Entre em qualquer card para ganhar XP global, subir de nivel e liberar feedback neon.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
+  <script src="parkour.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
