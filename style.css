@@ -354,6 +354,37 @@ button:hover {
   background: #05060f;
 }
 
+.bullet-panel {
+  justify-items: stretch;
+}
+
+.bullet-stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+
+#bulletCanvas {
+  width: min(100%, 760px);
+  aspect-ratio: 19 / 13;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: var(--radius);
+  background: #05060f;
+  box-shadow: 0 0 32px rgba(255, 43, 214, 0.12);
+}
+
+.bullet-retry {
+  position: absolute;
+  left: 50%;
+  bottom: 54px;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.bullet-retry:hover {
+  transform: translateX(-50%) translateY(-2px);
+}
+
 .memory-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(58px, 92px));
