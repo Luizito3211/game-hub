@@ -160,10 +160,12 @@ async function loadGame(id) {
   beep(320, 0.06, "square");
 
   try {
-    const module = await import(`./games/${game.module}.js`);
+    const GameClass = window.NeonGames?.[game.module];
     if (state.activeGameId !== id) return;
+    if (typeof GameClass !== "function") {
+      throw new Error(`Classe do jogo nao registrada: ${game.module}`);
+    }
 
-    const GameClass = module.default;
     const instance = new GameClass();
     validateGame(instance, game.title);
     state.activeGame = instance;

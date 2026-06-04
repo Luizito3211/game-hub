@@ -1,7 +1,10 @@
+(() => {
 const stat = (label, value) => `<div class="stat"><span class="stat-label">${label}</span><strong>${value}</strong></div>`;
 const arcade = () => window.NeonArcade || {};
 
-export default class PlataformaGame {
+window.NeonGames ??= {};
+
+class PlataformaGame {
   init(container, onXpGain) {
     this.container = container;
     this.onXpGain = onXpGain;
@@ -315,3 +318,6 @@ export default class PlataformaGame {
     ctx.fillRect(eyeX, player.y + 8, 5, 5);
   }
 }
+
+window.NeonGames.platform = PlataformaGame;
+})();

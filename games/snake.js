@@ -1,7 +1,10 @@
+(() => {
 const stat = (label, value) => `<div class="stat"><span class="stat-label">${label}</span><strong>${value}</strong></div>`;
 const arcade = () => window.NeonArcade || {};
 
-export default class SnakeGame {
+window.NeonGames ??= {};
+
+class SnakeGame {
   init(container, onXpGain) {
     this.container = container;
     this.onXpGain = onXpGain;
@@ -117,3 +120,6 @@ export default class SnakeGame {
     if (x + this.dir.x || y + this.dir.y) this.nextDir = { x, y };
   }
 }
+
+window.NeonGames.snake = SnakeGame;
+})();

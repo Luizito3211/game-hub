@@ -1,7 +1,10 @@
+(() => {
 const stat = (label, value) => `<div class="stat"><span class="stat-label">${label}</span><strong>${value}</strong></div>`;
 const arcade = () => window.NeonArcade || {};
 
-export default class ClickerGame {
+window.NeonGames ??= {};
+
+class ClickerGame {
   init(container, onXpGain) {
     this.container = container;
     this.onXpGain = onXpGain;
@@ -81,3 +84,6 @@ export default class ClickerGame {
     this.container.querySelector("#autoPower").textContent = this.auto;
   }
 }
+
+window.NeonGames.clicker = ClickerGame;
+})();

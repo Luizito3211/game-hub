@@ -1,6 +1,9 @@
+(() => {
 const arcade = () => window.NeonArcade || {};
 
-export default class ParkourGame {
+window.NeonGames ??= {};
+
+class ParkourGame {
   init(container, onXpGain) {
     this.container = container;
     this.onXpGain = onXpGain;
@@ -291,3 +294,6 @@ export default class ParkourGame {
     this.keys.delete(event.code);
   }
 }
+
+window.NeonGames.parkour = ParkourGame;
+})();

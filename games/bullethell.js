@@ -1,7 +1,10 @@
+(() => {
 const stat = (label, value) => `<div class="stat"><span class="stat-label">${label}</span><strong>${value}</strong></div>`;
 const arcade = () => window.NeonArcade || {};
 
-export default class BulletHellGame {
+window.NeonGames ??= {};
+
+class BulletHellGame {
   init(container, onXpGain) {
     this.container = container;
     this.onXpGain = onXpGain;
@@ -300,3 +303,6 @@ export default class BulletHellGame {
     ctx.fillText("XP enviado ao portal", this.canvas.width / 2, this.canvas.height / 2 + 42);
   }
 }
+
+window.NeonGames.bullethell = BulletHellGame;
+})();
