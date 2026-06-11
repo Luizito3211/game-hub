@@ -84,9 +84,9 @@ class SnakeGame {
   }
 
   draw() {
-    this.ctx.fillStyle = "#05060f";
+    this.ctx.fillStyle = "#f8fafc";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.strokeStyle = "rgba(255,255,255,.045)";
+    this.ctx.strokeStyle = "#d8e0ea";
     for (let i = 0; i <= this.size; i++) {
       this.ctx.beginPath();
       this.ctx.moveTo(i * this.tile, 0);
@@ -97,9 +97,9 @@ class SnakeGame {
       this.ctx.lineTo(this.canvas.width, i * this.tile);
       this.ctx.stroke();
     }
-    this.ctx.fillStyle = "#ff2bd6";
+    this.ctx.fillStyle = "#e68a00";
     this.ctx.fillRect(this.apple.x * this.tile + 3, this.apple.y * this.tile + 3, this.tile - 6, this.tile - 6);
-    this.ctx.fillStyle = "#b9ff3d";
+    this.ctx.fillStyle = "#003366";
     this.snake.forEach((p) => this.ctx.fillRect(p.x * this.tile + 2, p.y * this.tile + 2, this.tile - 4, this.tile - 4));
   }
 

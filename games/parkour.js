@@ -82,8 +82,8 @@ class ParkourGame {
 
   setupScene() {
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x050713);
-    this.scene.fog = new THREE.Fog(0x050713, 28, 88);
+    this.scene.background = new THREE.Color(0xf8fafc);
+    this.scene.fog = new THREE.Fog(0xf8fafc, 34, 96);
     this.camera = new THREE.PerspectiveCamera(72, 1, 0.1, 180);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -105,17 +105,17 @@ class ParkourGame {
     }));
 
     this.materials = {
-      cyan: new THREE.MeshStandardMaterial({ color: 0x17203d, emissive: 0x00d9ff, emissiveIntensity: 0.32, roughness: 0.48 }),
-      pink: new THREE.MeshStandardMaterial({ color: 0x32122c, emissive: 0xff2bd6, emissiveIntensity: 0.28, roughness: 0.52 }),
-      lime: new THREE.MeshStandardMaterial({ color: 0x18310f, emissive: 0xb9ff3d, emissiveIntensity: 0.32, roughness: 0.45 }),
-      gold: new THREE.MeshStandardMaterial({ color: 0x7a5512, emissive: 0xffd166, emissiveIntensity: 0.75, roughness: 0.34 }),
-      wall: new THREE.MeshStandardMaterial({ color: 0x201833, emissive: 0x6f4dff, emissiveIntensity: 0.24, roughness: 0.62 }),
-      player: new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x24f7ff, emissiveIntensity: 0.45, roughness: 0.35 }),
+      cyan: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.58 }),
+      pink: new THREE.MeshStandardMaterial({ color: 0xe5edf5, roughness: 0.6 }),
+      lime: new THREE.MeshStandardMaterial({ color: 0xd8e0ea, roughness: 0.62 }),
+      gold: new THREE.MeshStandardMaterial({ color: 0xe68a00, roughness: 0.48 }),
+      wall: new THREE.MeshStandardMaterial({ color: 0x003366, roughness: 0.64 }),
+      player: new THREE.MeshStandardMaterial({ color: 0xe68a00, roughness: 0.42 }),
     };
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 0.85);
     keyLight.position.set(8, 16, 10);
-    const pinkLight = new THREE.PointLight(0xff2bd6, 1.3, 34);
+    const pinkLight = new THREE.PointLight(0xe68a00, 0.65, 34);
     pinkLight.position.set(-7, 8, 16);
     this.scene.add(new THREE.AmbientLight(0x88aaff, 0.34), keyLight, pinkLight);
     this.meshes = [];
@@ -166,7 +166,7 @@ class ParkourGame {
   }
 
   addGrid() {
-    const grid = new THREE.GridHelper(90, 45, 0x24f7ff, 0x243052);
+    const grid = new THREE.GridHelper(90, 45, 0x003366, 0xd8e0ea);
     grid.position.y = -0.28;
     grid.material.transparent = true;
     grid.material.opacity = 0.26;

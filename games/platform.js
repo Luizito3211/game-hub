@@ -263,8 +263,8 @@ class PlataformaGame {
     ctx.save();
     ctx.translate(-this.cameraX, 0);
     const gradient = ctx.createLinearGradient(this.cameraX, 0, this.cameraX, this.canvas.height);
-    gradient.addColorStop(0, "#080916");
-    gradient.addColorStop(1, "#111025");
+    gradient.addColorStop(0, "#f8fafc");
+    gradient.addColorStop(1, "#e5edf5");
     ctx.fillStyle = gradient;
     ctx.fillRect(this.cameraX, 0, this.canvas.width, this.canvas.height);
     this.drawGoal(ctx);
@@ -276,7 +276,7 @@ class PlataformaGame {
     if (this.won) {
       ctx.fillStyle = "rgba(5, 6, 16, 0.72)";
       ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-      ctx.fillStyle = "#b9ff3d";
+      ctx.fillStyle = "#e68a00";
       ctx.font = "700 38px system-ui";
       ctx.textAlign = "center";
       ctx.fillText("Vitoria!", this.canvas.width / 2, this.canvas.height / 2 - 10);
@@ -287,33 +287,33 @@ class PlataformaGame {
   }
 
   drawBlock(ctx, block) {
-    ctx.fillStyle = "#17203d";
+    ctx.fillStyle = "#ffffff";
     ctx.fillRect(block.x, block.y, block.w, block.h);
-    ctx.strokeStyle = "#24f7ff";
+    ctx.strokeStyle = "#003366";
     ctx.lineWidth = 2;
     ctx.strokeRect(block.x + 1, block.y + 1, block.w - 2, block.h - 2);
   }
 
   drawGoal(ctx) {
     if (!this.goal) return;
-    ctx.fillStyle = "#ffd166";
+    ctx.fillStyle = "#e68a00";
     ctx.fillRect(this.goal.x + 8, this.goal.y + 4, this.goal.w - 16, this.goal.h - 8);
-    ctx.strokeStyle = "#fff0a8";
+    ctx.strokeStyle = "#b56d00";
     ctx.strokeRect(this.goal.x + 8, this.goal.y + 4, this.goal.w - 16, this.goal.h - 8);
   }
 
   drawGhost(ctx, ghost) {
     ctx.globalAlpha = Math.max(0, ghost.life / 0.22) * 0.45;
-    ctx.fillStyle = "#24f7ff";
+    ctx.fillStyle = "#e68a00";
     ctx.fillRect(ghost.x, ghost.y, ghost.w, ghost.h);
     ctx.globalAlpha = 1;
   }
 
   drawPlayer(ctx) {
     const player = this.player;
-    ctx.fillStyle = player.dashTime > 0 ? "#ffffff" : "#ff2bd6";
+    ctx.fillStyle = player.dashTime > 0 ? "#e68a00" : "#003366";
     ctx.fillRect(player.x, player.y, player.w, player.h);
-    ctx.fillStyle = "#b9ff3d";
+    ctx.fillStyle = "#ffffff";
     const eyeX = player.facing > 0 ? player.x + player.w - 9 : player.x + 5;
     ctx.fillRect(eyeX, player.y + 8, 5, 5);
   }

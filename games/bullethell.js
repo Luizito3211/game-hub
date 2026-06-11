@@ -155,7 +155,7 @@ class BulletHellGame {
     const dy = this.player.y - pos.y;
     const len = Math.hypot(dx, dy) || 1;
     const speed = this.baseSpeed() + 45;
-    this.addBullet(pos.x, pos.y, (dx / len) * speed, (dy / len) * speed, 7, "#ffd166");
+    this.addBullet(pos.x, pos.y, (dx / len) * speed, (dy / len) * speed, 7, "#e68a00");
   }
 
   spawnRainBurst() {
@@ -171,7 +171,7 @@ class BulletHellGame {
     const fromLeft = Math.random() > 0.5;
     const y = this.arena.y + Math.random() * this.arena.h;
     const x = fromLeft ? this.arena.x - 26 : this.arena.x + this.arena.w + 26;
-    this.addBullet(x, y, (fromLeft ? 1 : -1) * (this.baseSpeed() + 80), (Math.random() - 0.5) * 75, 8, "#ff4d6d");
+    this.addBullet(x, y, (fromLeft ? 1 : -1) * (this.baseSpeed() + 80), (Math.random() - 0.5) * 75, 8, "#b42318");
   }
 
   spawnCirclePattern() {
@@ -180,7 +180,7 @@ class BulletHellGame {
     const speed = this.baseSpeed() * 0.82;
     for (let i = 0; i < count; i++) {
       const angle = (Math.PI * 2 * i) / count + this.elapsed * 0.2;
-      this.addBullet(center.x, center.y, Math.cos(angle) * speed, Math.sin(angle) * speed, 5, "#24f7ff");
+      this.addBullet(center.x, center.y, Math.cos(angle) * speed, Math.sin(angle) * speed, 5, "#003366");
     }
   }
 
@@ -239,7 +239,7 @@ class BulletHellGame {
   draw() {
     const ctx = this.ctx;
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    ctx.fillStyle = "#05060f";
+    ctx.fillStyle = "#f8fafc";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawArena(ctx);
     this.bullets.forEach((bullet) => this.drawBullet(ctx, bullet));
@@ -248,12 +248,12 @@ class BulletHellGame {
   }
 
   drawArena(ctx) {
-    ctx.fillStyle = "#02030a";
+    ctx.fillStyle = "#ffffff";
     ctx.fillRect(this.arena.x, this.arena.y, this.arena.w, this.arena.h);
-    ctx.strokeStyle = "#f7fbff";
+    ctx.strokeStyle = "#003366";
     ctx.lineWidth = 3;
     ctx.strokeRect(this.arena.x, this.arena.y, this.arena.w, this.arena.h);
-    ctx.strokeStyle = "rgba(36,247,255,.28)";
+    ctx.strokeStyle = "#d8e0ea";
     ctx.lineWidth = 1;
     for (let x = this.arena.x + 40; x < this.arena.x + this.arena.w; x += 40) {
       ctx.beginPath();
@@ -272,7 +272,7 @@ class BulletHellGame {
   drawPlayer(ctx) {
     ctx.save();
     ctx.globalAlpha = this.player.invuln > 0 ? 0.55 + Math.sin(this.elapsed * 26) * 0.25 : 1;
-    ctx.fillStyle = "#ff2bd6";
+    ctx.fillStyle = "#003366";
     ctx.beginPath();
     ctx.moveTo(this.player.x, this.player.y - this.player.r);
     ctx.bezierCurveTo(this.player.x + 16, this.player.y - 22, this.player.x + 24, this.player.y + 4, this.player.x, this.player.y + 16);
@@ -292,7 +292,7 @@ class BulletHellGame {
     ctx.fillStyle = "rgba(0,0,0,.72)";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     ctx.textAlign = "center";
-    ctx.fillStyle = "#ff4d6d";
+    ctx.fillStyle = "#b42318";
     ctx.font = "700 42px system-ui";
     ctx.fillText("GAME OVER", this.canvas.width / 2, this.canvas.height / 2 - 24);
     ctx.fillStyle = "#f7fbff";

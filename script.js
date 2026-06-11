@@ -11,7 +11,7 @@ const games = [
     module: "platform",
     title: "Dash Platformer",
     icon: "2D",
-    accent: "#24f7ff",
+    accent: "#E68A00",
     desc: "Duas fases, pulo fluido, dash aereo e colisao AABB.",
   },
   {
@@ -19,7 +19,7 @@ const games = [
     module: "snake",
     title: "Snake",
     icon: "S",
-    accent: "#b9ff3d",
+    accent: "#E68A00",
     desc: "Canvas, velocidade crescente e recorde local.",
   },
   {
@@ -27,7 +27,7 @@ const games = [
     module: "bullethell",
     title: "Bullet Hell",
     icon: "BH",
-    accent: "#ff2bd6",
+    accent: "#E68A00",
     desc: "Sobreviva aos projeteis em uma caixa de batalha.",
   },
   {
@@ -35,7 +35,7 @@ const games = [
     module: "clicker",
     title: "Tap Rush",
     icon: "TAP",
-    accent: "#ffd166",
+    accent: "#E68A00",
     desc: "Clique rapido, compre upgrades e gere pontos.",
   },
   {
@@ -43,16 +43,16 @@ const games = [
     module: "jokenpo",
     title: "RPS Impact",
     icon: "RPS",
-    accent: "#ff4d6d",
-    desc: "Pedra, papel e tesoura com streak neon.",
+    accent: "#E68A00",
+    desc: "Pedra, papel e tesoura com sequencia de acertos.",
   },
   {
     id: "parkour",
     module: "parkour",
-    title: "Neon Parkour 3D",
+    title: "Parkour 3D",
     icon: "3D",
-    accent: "#24f7ff",
-    desc: "Rigidbody, saltos, wall run e plataformas neon.",
+    accent: "#E68A00",
+    desc: "Rigidbody, saltos, wall run e plataformas 3D.",
   },
 ];
 
@@ -118,10 +118,18 @@ window.NeonArcade = {
   beep,
 };
 
+function renderIcon(icon) {
+  if (icon.length === 1) {
+    return `<span class="icon-main">${icon}</span><span class="icon-dot" aria-hidden="true"></span>`;
+  }
+
+  return `<span class="icon-main">${icon.slice(0, -1)}</span><span class="icon-accent">${icon.slice(-1)}</span>`;
+}
+
 function renderCards() {
   $("#gameGrid").innerHTML = games.map((game) => `
     <button class="game-card" style="--accent:${game.accent}" data-game="${game.id}" type="button">
-      <span class="game-icon">${game.icon}</span>
+      <span class="game-icon">${renderIcon(game.icon)}</span>
       <span>
         <h3>${game.title}</h3>
         <p>${game.desc}</p>
@@ -144,8 +152,8 @@ function showEmptyArena() {
   $("#gameTitle").textContent = "Selecione um jogo";
   mount.innerHTML = `
     <div class="empty-state">
-      <span>GO</span>
-      <p>Entre em qualquer card para ganhar XP global, subir de nivel e liberar feedback neon.</p>
+      <span class="progress-symbol" data-label="GO">GO</span>
+      <p>Escolha uma atividade para ganhar XP, acompanhar seu progresso e explorar novos desafios.</p>
     </div>`;
 }
 
@@ -156,7 +164,7 @@ async function loadGame(id) {
 
   state.activeGameId = id;
   setArena(game);
-  mount.innerHTML = `<div class="empty-state"><span>...</span><p>Carregando ${game.title}</p></div>`;
+  mount.innerHTML = `<div class="empty-state"><span class="progress-symbol" data-label="...">...</span><p>Carregando ${game.title}</p></div>`;
   beep(320, 0.06, "square");
 
   try {
@@ -175,7 +183,7 @@ async function loadGame(id) {
     console.error(error);
     mount.innerHTML = `
       <div class="empty-state">
-        <span>!</span>
+        <span class="progress-symbol" data-label="!">!</span>
         <p>Este jogo nao carregou. Verifique o arquivo games/${game.module}.js.</p>
       </div>`;
   }
@@ -210,7 +218,7 @@ function burstParticles() {
       vx: (Math.random() - 0.5) * 7,
       vy: (Math.random() - 0.5) * 7,
       life: 48,
-      color: Math.random() > 0.5 ? "#24f7ff" : "#ff2bd6",
+      color: Math.random() > 0.5 ? "#003366" : "#E68A00",
     });
   }
 }
