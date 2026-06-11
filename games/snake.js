@@ -5,9 +5,9 @@ const arcade = () => window.NeonArcade || {};
 window.NeonGames ??= {};
 
 class SnakeGame {
-  init(container, onXpGain) {
+  init(container, onCoinsEarned) {
     this.container = container;
-    this.onXpGain = onXpGain;
+    this.onCoinsEarned = onCoinsEarned;
     const best = Number(localStorage.getItem("snake-best") || 0);
     this.container.innerHTML = `
       <div class="game-panel snake-wrap">
@@ -75,7 +75,7 @@ class SnakeGame {
         localStorage.setItem("snake-best", String(this.score));
         this.bestLabel.textContent = this.score;
       }
-      this.onXpGain(12, "maca capturada");
+      this.onCoinsEarned(12, "maca capturada");
       this.placeApple();
     } else {
       this.snake.pop();

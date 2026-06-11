@@ -1,9 +1,12 @@
 const state = {
-  xp: Number(localStorage.getItem("neon-xp") || 0),
+  coins: Number(localStorage.getItem("progresso-coins") || 0),
+  discordUserId: localStorage.getItem("discord_user_id") || "discord-demo-user",
   sound: localStorage.getItem("neon-sound") !== "off",
   activeGame: null,
   activeGameId: null,
 };
+
+const API_BASE_URL = "";
 
 const games = [
   {
@@ -58,36 +61,56 @@ const games = [
 
 const $ = (selector) => document.querySelector(selector);
 const mount = $("#gameMount");
-const levelLabel = $("#levelLabel");
-const xpLabel = $("#xpLabel");
-const xpFill = $("#xpFill");
+const coinBalance = $("#coinBalance");
+const discordUserIdInput = $("#discordUserId");
 const toast = $("#toast");
 const particleCanvas = $("#particles");
 const pctx = particleCanvas.getContext("2d");
 let audioCtx;
 let particles = [];
 
-function levelFromXp(xp) {
-  return Math.floor(xp / 300) + 1;
+function updateBalance() {
+  coinBalance.textContent = `${state.coins} Progresso Coins`;
 }
 
-function updateXpUi() {
-  const level = levelFromXp(state.xp);
-  const inLevel = state.xp % 300;
-  levelLabel.textContent = `Nivel ${level}`;
-  xpLabel.textContent = `${state.xp} XP`;
-  xpFill.style.width = `${(inLevel / 300) * 100}%`;
-}
-
-function addXp(amount, label = "XP ganho") {
+async function earnCoins(amount, label = "moedas ganhas", game = "game-hub") {
   const value = Math.max(0, Math.floor(Number(amount) || 0));
   if (!value) return;
-  state.xp += value;
-  localStorage.setItem("neon-xp", String(state.xp));
-  updateXpUi();
-  showToast(`+${value} XP - ${label}`);
+  state.coins += value;
+  localStorage.setItem("progresso-coins", String(state.coins));
+  updateBalance();
+  showToast(`+${value} Progresso Coins - ${label}`);
   burstParticles();
   beep(760, 0.08, "triangle");
+  await syncCoinsWithBackend({ amount: value, game });
+}
+
+// Future Discord economy integration: change API_BASE_URL when the bot backend is ready.
+async function syncCoinsWithBackend({ amount, game }) {
+  const payload = {
+    discordId: state.discordUserId,
+    amount,
+    game,
+  };
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/economy/add-coins`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Falha ao sincronizar moedas: ${response.status}`);
+    }
+
+    return response.json().catch(() => null);
+  } catch (error) {
+    console.warn("Sincronizacao de moedas pendente.", { payload, error });
+    return null;
+  }
 }
 
 function showToast(message) {
@@ -113,7 +136,7 @@ function beep(freq = 420, duration = 0.05, type = "sine") {
 }
 
 window.NeonArcade = {
-  addXp,
+  earnCoins,
   showToast,
   beep,
 };
@@ -153,7 +176,7 @@ function showEmptyArena() {
   mount.innerHTML = `
     <div class="empty-state">
       <span class="progress-symbol" data-label="GO">GO</span>
-      <p>Escolha uma atividade para ganhar XP, acompanhar seu progresso e explorar novos desafios.</p>
+      <p>Escolha uma atividade para ganhar moedas, acompanhar seu saldo e explorar novos desafios.</p>
     </div>`;
 }
 
@@ -177,7 +200,7 @@ async function loadGame(id) {
     const instance = new GameClass();
     validateGame(instance, game.title);
     state.activeGame = instance;
-    instance.init(mount, addXp);
+    instance.init(mount, (amount, label) => earnCoins(amount, label, game.id));
     instance.start();
   } catch (error) {
     console.error(error);
@@ -246,6 +269,14 @@ $("#soundToggle").addEventListener("click", () => {
   beep(520, 0.05, "triangle");
 });
 
+discordUserIdInput.value = state.discordUserId;
+discordUserIdInput.addEventListener("change", () => {
+  state.discordUserId = discordUserIdInput.value.trim() || "discord-demo-user";
+  localStorage.setItem("discord_user_id", state.discordUserId);
+  discordUserIdInput.value = state.discordUserId;
+  showToast("Discord ID atualizado");
+});
+
 $("#backButton").addEventListener("click", () => {
   destroyActiveGame();
   state.activeGameId = null;
@@ -254,7 +285,7 @@ $("#backButton").addEventListener("click", () => {
 
 window.addEventListener("resize", resizeParticles);
 renderCards();
-updateXpUi();
+updateBalance();
 resizeParticles();
 animateParticles();
 $("#soundToggle").textContent = state.sound ? "S" : "X";

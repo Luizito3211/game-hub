@@ -20,14 +20,15 @@
       </div>
     </div>
 
-    <section class="player-panel" aria-label="Progresso do jogador">
-      <div class="level-line">
-        <span id="levelLabel">Nivel 1</span>
-        <strong id="xpLabel">0 XP</strong>
+    <section class="wallet-panel" aria-label="Carteira do jogador">
+      <div class="coin-balance">
+        <span class="coin-mark" aria-hidden="true"></span>
+        <strong id="coinBalance">0 Progresso Coins</strong>
       </div>
-      <div class="xp-track">
-        <div id="xpFill" class="xp-fill"></div>
-      </div>
+      <label class="discord-field" for="discordUserId">
+        <span>Discord ID</span>
+        <input id="discordUserId" type="text" autocomplete="off" spellcheck="false">
+      </label>
     </section>
 
     <button id="soundToggle" class="icon-button" type="button" aria-label="Alternar sons" title="Alternar sons">S</button>
@@ -53,7 +54,7 @@
       <div id="gameMount" class="game-mount">
         <div class="empty-state">
           <span class="progress-symbol" data-label="GO">GO</span>
-          <p>Escolha uma atividade para ganhar XP, acompanhar seu progresso e explorar novos desafios.</p>
+          <p>Escolha uma atividade para ganhar moedas, acompanhar seu saldo e explorar novos desafios.</p>
         </div>
       </div>
     </section>

@@ -4,16 +4,16 @@ const arcade = () => window.NeonArcade || {};
 window.NeonGames ??= {};
 
 class ParkourGame {
-  init(container, onXpGain) {
+  init(container, onCoinsEarned) {
     this.container = container;
-    this.onXpGain = onXpGain;
+    this.onCoinsEarned = onCoinsEarned;
     this.container.innerHTML = `
       <div class="parkour-shell">
         <div class="parkour-hud">
           <div class="stat"><span class="stat-label">Modo</span><strong>3a Pessoa</strong></div>
           <div class="stat"><span class="stat-label">Estado</span><strong id="parkourState">Spawn</strong></div>
           <div class="stat"><span class="stat-label">Respawns</span><strong id="parkourFalls">0</strong></div>
-          <div class="stat"><span class="stat-label">Premio</span><strong>180 XP</strong></div>
+          <div class="stat"><span class="stat-label">Premio</span><strong>180 moedas</strong></div>
         </div>
         <div class="parkour-stage" id="parkourStage">
           <div class="parkour-crosshair"></div>
@@ -245,7 +245,7 @@ class ParkourGame {
 
   winLevel() {
     this.won = true;
-    this.onXpGain(180, "nivel de Parkour 3D completo");
+    this.onCoinsEarned(180, "nivel de Parkour 3D completo");
     arcade().showToast?.("Parkour concluido. Resetando arena...");
     this.winTimer = setTimeout(() => this.resetPlayer("Vitoria"), 700);
   }

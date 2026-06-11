@@ -146,41 +146,81 @@ button {
   font-weight: 500;
 }
 
-.player-panel {
-  padding: 14px 16px;
+.wallet-panel {
+  display: grid;
+  grid-template-columns: minmax(180px, auto) minmax(180px, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
 }
 
-.level-line {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 10px;
-  color: var(--muted);
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.level-line strong {
+.coin-balance {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
   color: var(--primary);
+  white-space: nowrap;
 }
 
-.xp-track {
-  height: 10px;
-  overflow: hidden;
+.coin-balance strong {
+  font-size: 0.98rem;
+  font-weight: 800;
+}
+
+.coin-mark {
+  width: 28px;
+  height: 28px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  background: var(--accent-soft);
+  position: relative;
+}
+
+.coin-mark::before {
+  content: "";
+  width: 9px;
+  height: 14px;
+  border-left: 2px solid var(--primary);
+  border-right: 2px solid var(--primary);
   border-radius: 999px;
-  background: var(--surface-soft);
-  border: 1px solid var(--line);
 }
 
-.xp-fill {
-  width: 0%;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--accent);
-  transition: width 450ms ease;
+.discord-field {
+  display: grid;
+  gap: 5px;
+}
+
+.discord-field span {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.discord-field input {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--primary);
+  background: var(--surface-soft);
+  font-size: 0.88rem;
+  font-weight: 700;
+  outline: 0;
+}
+
+.discord-field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(230, 138, 0, 0.16);
 }
 
 .icon-button,
@@ -689,6 +729,10 @@ button:focus-visible {
 
   .game-grid,
   .rps-choices {
+    grid-template-columns: 1fr;
+  }
+
+  .wallet-panel {
     grid-template-columns: 1fr;
   }
 

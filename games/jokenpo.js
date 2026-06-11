@@ -5,16 +5,16 @@ const arcade = () => window.NeonArcade || {};
 window.NeonGames ??= {};
 
 class JokenpoGame {
-  init(container, onXpGain) {
+  init(container, onCoinsEarned) {
     this.container = container;
-    this.onXpGain = onXpGain;
+    this.onCoinsEarned = onCoinsEarned;
     this.wins = 0;
     this.streak = 0;
     this.choices = ["Pedra", "Papel", "Tesoura"];
     this.beats = { Pedra: "Tesoura", Papel: "Pedra", Tesoura: "Papel" };
     this.container.innerHTML = `
       <div class="game-panel">
-        <div class="stats">${stat("Vitorias", "<span id='rpsWins'>0</span>")}${stat("Streak", "<span id='rpsStreak'>0</span>")}${stat("Premio", "30 XP/vitoria")}</div>
+        <div class="stats">${stat("Vitorias", "<span id='rpsWins'>0</span>")}${stat("Streak", "<span id='rpsStreak'>0</span>")}${stat("Premio", "30 moedas/vitoria")}</div>
         <div class="rps-choices">${this.choices.map((c) => `<button class="choice-button" data-choice="${c}" type="button">${c}</button>`).join("")}</div>
         <div class="impact" id="impact">Escolha sua jogada</div>
       </div>`;
@@ -51,7 +51,7 @@ class JokenpoGame {
       impact.textContent = `${player} quebra ${cpu}. Vitoria!`;
       this.container.querySelector("#rpsWins").textContent = this.wins;
       this.container.querySelector("#rpsStreak").textContent = this.streak;
-      this.onXpGain(30 + this.streak * 5, "streak de impacto");
+      this.onCoinsEarned(30 + this.streak * 5, "streak de impacto");
       return;
     }
 

@@ -5,9 +5,9 @@ const arcade = () => window.NeonArcade || {};
 window.NeonGames ??= {};
 
 class ClickerGame {
-  init(container, onXpGain) {
+  init(container, onCoinsEarned) {
     this.container = container;
-    this.onXpGain = onXpGain;
+    this.onCoinsEarned = onCoinsEarned;
     this.points = 0;
     this.perClick = 1;
     this.upgradeCost = 35;
@@ -53,7 +53,7 @@ class ClickerGame {
 
   onTap() {
     this.points += this.perClick;
-    if (this.points % 20 < this.perClick) this.onXpGain(10, "combo tap");
+    if (this.points % 20 < this.perClick) this.onCoinsEarned(10, "combo tap");
     arcade().beep?.(440, 0.035, "square");
     this.paint();
   }
@@ -63,7 +63,7 @@ class ClickerGame {
     this.points -= this.upgradeCost;
     this.perClick += 1;
     this.upgradeCost = Math.ceil(this.upgradeCost * 1.55);
-    this.onXpGain(20, "upgrade comprado");
+    this.onCoinsEarned(20, "upgrade comprado");
     this.paint();
   }
 
@@ -72,7 +72,7 @@ class ClickerGame {
     this.points -= this.autoCost;
     this.auto += 1;
     this.autoCost = Math.ceil(this.autoCost * 1.65);
-    this.onXpGain(25, "auto tap instalado");
+    this.onCoinsEarned(25, "auto tap instalado");
     this.paint();
   }
 

@@ -5,15 +5,15 @@ const arcade = () => window.NeonArcade || {};
 window.NeonGames ??= {};
 
 class PlataformaGame {
-  init(container, onXpGain) {
+  init(container, onCoinsEarned) {
     this.container = container;
-    this.onXpGain = onXpGain;
+    this.onCoinsEarned = onCoinsEarned;
     this.container.innerHTML = `
       <div class="game-panel platformer-panel">
         <div class="stats">
           ${stat("Fase", "<span id='platformLevel'>1/2</span>")}
           ${stat("Dash", "<span id='platformDash'>Pronto</span>")}
-          ${stat("Premio", "160 XP")}
+          ${stat("Premio", "160 moedas")}
         </div>
         <canvas id="platformCanvas" width="900" height="506"></canvas>
         <div class="parkour-help">
@@ -235,7 +235,7 @@ class PlataformaGame {
       return;
     }
     this.won = true;
-    this.onXpGain(160, "platformer 2D completo");
+    this.onCoinsEarned(160, "platformer 2D completo");
     arcade().showToast?.("Dash Platformer completo!");
     this.winTimer = setTimeout(() => this.loadLevel(0), 1200);
   }
@@ -282,7 +282,7 @@ class PlataformaGame {
       ctx.fillText("Vitoria!", this.canvas.width / 2, this.canvas.height / 2 - 10);
       ctx.font = "500 18px system-ui";
       ctx.fillStyle = "#f7fbff";
-      ctx.fillText("+160 XP no portal", this.canvas.width / 2, this.canvas.height / 2 + 30);
+      ctx.fillText("+160 moedas", this.canvas.width / 2, this.canvas.height / 2 + 30);
     }
   }
 

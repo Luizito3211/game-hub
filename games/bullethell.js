@@ -5,9 +5,9 @@ const arcade = () => window.NeonArcade || {};
 window.NeonGames ??= {};
 
 class BulletHellGame {
-  init(container, onXpGain) {
+  init(container, onCoinsEarned) {
     this.container = container;
-    this.onXpGain = onXpGain;
+    this.onCoinsEarned = onCoinsEarned;
     this.container.innerHTML = `
       <div class="game-panel bullet-panel">
         <div class="stats">
@@ -22,7 +22,7 @@ class BulletHellGame {
         <div class="parkour-help">
           <span>Setas: mover em 8 direcoes</span>
           <span>3 HP: cada colisao tira 1</span>
-          <span>Sobreviva para converter score em XP</span>
+          <span>Sobreviva para converter score em moedas</span>
         </div>
       </div>`;
     this.canvas = this.container.querySelector("#bulletCanvas");
@@ -225,9 +225,9 @@ class BulletHellGame {
     this.dead = true;
     const finalScore = Math.max(1, Math.floor(this.score));
     this.score = finalScore;
-    this.onXpGain(finalScore, "score no Bullet Hell");
+    this.onCoinsEarned(finalScore, "score no Bullet Hell");
     this.retryButton.hidden = false;
-    arcade().showToast?.(`Fim de batalha: ${finalScore} XP`);
+    arcade().showToast?.(`Fim de batalha: ${finalScore} moedas`);
   }
 
   updateHud() {
@@ -300,7 +300,7 @@ class BulletHellGame {
     ctx.fillText(`Score final: ${Math.floor(this.score)}`, this.canvas.width / 2, this.canvas.height / 2 + 14);
     ctx.font = "500 15px system-ui";
     ctx.fillStyle = "#a8b4d6";
-    ctx.fillText("XP enviado ao portal", this.canvas.width / 2, this.canvas.height / 2 + 42);
+    ctx.fillText("Moedas enviadas ao portal", this.canvas.width / 2, this.canvas.height / 2 + 42);
   }
 }
 
