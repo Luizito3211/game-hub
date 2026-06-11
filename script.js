@@ -1,12 +1,16 @@
 const state = {
-  coins: Number(localStorage.getItem("progresso-coins") || 0),
-  discordUserId: localStorage.getItem("discord_user_id") || "discord-demo-user",
+  coins: Number(localStorage.getItem("progresso_last_balance") || 0),
+  discordUserId: localStorage.getItem("discord_user_id") || "",
   sound: localStorage.getItem("neon-sound") !== "off",
   activeGame: null,
   activeGameId: null,
 };
 
-const API_BASE_URL = "";
+const API_BASE_URL = window.location.port === "5500"
+  ? "http://localhost:3000"
+  : window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? window.location.origin
+    : "https://ghubot.onrender.com";
 
 const games = [
   {
@@ -70,45 +74,60 @@ let audioCtx;
 let particles = [];
 
 function updateBalance() {
-  coinBalance.textContent = `${state.coins} Progresso Coins`;
+  coinBalance.textContent = `${state.coins} moedas`;
 }
 
-async function earnCoins(amount, label = "moedas ganhas", game = "game-hub") {
+async function earnCoins(amount, label = "moedas ganhas", game = "Game Hub") {
   const value = Math.max(0, Math.floor(Number(amount) || 0));
   if (!value) return;
-  state.coins += value;
-  localStorage.setItem("progresso-coins", String(state.coins));
+
+  const discordId = localStorage.getItem("discord_user_id");
+
+  if (!discordId) {
+    showToast("Informe seu Discord ID antes de receber moedas.");
+    return;
+  }
+
+  const result = await sendCoinsToEconomyBot({
+    discordId,
+    amount: value,
+    game,
+  });
+
+  if (!result?.success) {
+    showToast("Nao foi possivel enviar as moedas ao bot.");
+    return;
+  }
+
+  state.coins = Number(result.newBalance) || 0;
+  localStorage.setItem("progresso_last_balance", String(state.coins));
   updateBalance();
-  showToast(`+${value} Progresso Coins - ${label}`);
+  showToast(`+${value} moedas - ${label}`);
   burstParticles();
   beep(760, 0.08, "triangle");
-  await syncCoinsWithBackend({ amount: value, game });
 }
 
-// Future Discord economy integration: change API_BASE_URL when the bot backend is ready.
-async function syncCoinsWithBackend({ amount, game }) {
-  const payload = {
-    discordId: state.discordUserId,
-    amount,
-    game,
-  };
-
+async function sendCoinsToEconomyBot({ discordId, amount, game }) {
   try {
     const response = await fetch(`${API_BASE_URL}/api/economy/add-coins`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        discordId,
+        amount,
+        game,
+      }),
     });
 
     if (!response.ok) {
-      throw new Error(`Falha ao sincronizar moedas: ${response.status}`);
+      throw new Error(`Falha ao enviar moedas: ${response.status}`);
     }
 
-    return response.json().catch(() => null);
+    return response.json();
   } catch (error) {
-    console.warn("Sincronizacao de moedas pendente.", { payload, error });
+    console.warn("Falha na integracao com o bot de economia.", error);
     return null;
   }
 }
@@ -200,7 +219,7 @@ async function loadGame(id) {
     const instance = new GameClass();
     validateGame(instance, game.title);
     state.activeGame = instance;
-    instance.init(mount, (amount, label) => earnCoins(amount, label, game.id));
+    instance.init(mount, (amount, label) => earnCoins(amount, label, game.title));
     instance.start();
   } catch (error) {
     console.error(error);
@@ -271,10 +290,10 @@ $("#soundToggle").addEventListener("click", () => {
 
 discordUserIdInput.value = state.discordUserId;
 discordUserIdInput.addEventListener("change", () => {
-  state.discordUserId = discordUserIdInput.value.trim() || "discord-demo-user";
+  state.discordUserId = discordUserIdInput.value.trim();
   localStorage.setItem("discord_user_id", state.discordUserId);
   discordUserIdInput.value = state.discordUserId;
-  showToast("Discord ID atualizado");
+  showToast(state.discordUserId ? "Discord ID salvo" : "Discord ID removido");
 });
 
 $("#backButton").addEventListener("click", () => {

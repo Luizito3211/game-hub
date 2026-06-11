@@ -13,6 +13,7 @@ class ClickerGame {
     this.upgradeCost = 35;
     this.autoCost = 90;
     this.auto = 0;
+    this.pendingCoins = 0;
     this.container.innerHTML = `
       <div class="game-panel clicker-core">
         <div class="stats">${stat("Pontos", "<span id='tapPoints'>0</span>")}${stat("Por clique", "<span id='tapPower'>1</span>")}${stat("Auto", "<span id='autoPower'>0</span>/s")}</div>
@@ -44,6 +45,7 @@ class ClickerGame {
   }
 
   destroy() {
+    this.flushCoins();
     clearInterval(this.interval);
     this.tapButton.removeEventListener("click", this.onTap);
     this.powerButton.removeEventListener("click", this.buyPower);
@@ -53,7 +55,10 @@ class ClickerGame {
 
   onTap() {
     this.points += this.perClick;
-    if (this.points % 20 < this.perClick) this.onCoinsEarned(10, "combo tap");
+    if (this.points % 20 < this.perClick) {
+      this.pendingCoins += 10;
+      arcade().showToast?.("+10 moedas acumuladas");
+    }
     arcade().beep?.(440, 0.035, "square");
     this.paint();
   }
@@ -63,7 +68,8 @@ class ClickerGame {
     this.points -= this.upgradeCost;
     this.perClick += 1;
     this.upgradeCost = Math.ceil(this.upgradeCost * 1.55);
-    this.onCoinsEarned(20, "upgrade comprado");
+    this.pendingCoins += 20;
+    arcade().showToast?.("+20 moedas acumuladas");
     this.paint();
   }
 
@@ -72,8 +78,16 @@ class ClickerGame {
     this.points -= this.autoCost;
     this.auto += 1;
     this.autoCost = Math.ceil(this.autoCost * 1.65);
-    this.onCoinsEarned(25, "auto tap instalado");
+    this.pendingCoins += 25;
+    arcade().showToast?.("+25 moedas acumuladas");
     this.paint();
+  }
+
+  flushCoins() {
+    if (this.pendingCoins <= 0) return;
+    const coins = this.pendingCoins;
+    this.pendingCoins = 0;
+    this.onCoinsEarned(coins, "sessao de Tap Rush finalizada");
   }
 
   paint() {

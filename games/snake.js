@@ -45,6 +45,8 @@ class SnakeGame {
     this.dir = { x: 1, y: 0 };
     this.nextDir = this.dir;
     this.score = 0;
+    this.apples = 0;
+    this.finished = false;
     this.scoreLabel.textContent = "0";
     clearInterval(this.timer);
     this.timer = setInterval(() => this.tick(), 115);
@@ -63,19 +65,24 @@ class SnakeGame {
     const crashed = head.x < 0 || head.y < 0 || head.x >= this.size || head.y >= this.size || this.snake.some((p) => p.x === head.x && p.y === head.y);
     if (crashed) {
       clearInterval(this.timer);
+      if (!this.finished) {
+        this.finished = true;
+        const coins = this.apples * 12;
+        if (coins > 0) this.onCoinsEarned(coins, "rodada de Snake finalizada");
+      }
       arcade().showToast?.("Snake finalizado");
       return;
     }
 
     this.snake.unshift(head);
     if (head.x === this.apple.x && head.y === this.apple.y) {
+      this.apples += 1;
       this.score += 10;
       this.scoreLabel.textContent = this.score;
       if (this.score > Number(localStorage.getItem("snake-best") || 0)) {
         localStorage.setItem("snake-best", String(this.score));
         this.bestLabel.textContent = this.score;
       }
-      this.onCoinsEarned(12, "maca capturada");
       this.placeApple();
     } else {
       this.snake.pop();

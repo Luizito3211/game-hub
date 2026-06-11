@@ -512,7 +512,7 @@ button:focus-visible {
 #bulletCanvas {
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);
-  background: #0f172a;
+  background: var(--surface);
   box-shadow: none;
 }
 
@@ -621,7 +621,7 @@ button:focus-visible {
   overflow: hidden;
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);
-  background: #0f172a;
+  background: var(--surface-soft);
 }
 
 .parkour-stage canvas {
